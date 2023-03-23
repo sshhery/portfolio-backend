@@ -10,13 +10,16 @@ import com.portfolio.mgb.Security.Controller.Mensaje;
 import com.portfolio.mgb.Service.ImpPersonaService;
 import java.util.List;
 import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +45,11 @@ public class PersonaController {
     
     
     
-      @GetMapping("/traer")
+  
+
+    
+    
+    @GetMapping("/traer")
     public List<Persona> getPersona(){
         return personaService.list();
     }
@@ -59,7 +66,7 @@ public class PersonaController {
         return "La persona fue creada correctamente";
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
+    
     @DeleteMapping("/borrar/{id}")
     public String deletePersona(@PathVariable int id){
         personaService.delete(id);
@@ -67,16 +74,16 @@ public class PersonaController {
     }
     
     
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<Persona> getById(@PathVariable("id")int id){
-        if(!personaService.existsById(id)){
-            return new ResponseEntity(new Mensaje("No existe el ID"), HttpStatus.BAD_REQUEST);
-        }
-        
-        Persona persona = personaService.getOne(id).get();
-        return new ResponseEntity(persona, HttpStatus.OK);
+     @GetMapping("/detail/{id}")
+    public ResponseEntity<Persona> getById(@PathVariable("id") int id){
+        if(!personaService.existsById(id))
+            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
+        Persona per = personaService.getOne(id).get();
+        return new ResponseEntity(per, HttpStatus.OK);
     }
     
+    
+  
     /*@DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int id){
         if(!personaService.existsById(id)){
